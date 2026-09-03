@@ -1,43 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import './styles.css';
+export default function App() {
+  return (
+    <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-6">
+      <section className="w-full max-w-2xl rounded-3xl border border-slate-800 bg-slate-900 p-8 shadow-2xl sm:p-12">
+        
+        <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/15 text-2xl text-emerald-400">
+          ✓
+        </div>
 
-function App() {
-  const [token, setToken] = useState('');
-  const [user, setUser] = useState(null);
-  const [status, setStatus] = useState('checking');
-  const [message, setMessage] = useState('');
+        <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-emerald-400">
+          Bienvenido
+        </p>
 
-  useEffect(() => {
-    fetch('/api/me', { credentials: 'include' })
-      .then(async r => { if (!r.ok) throw new Error(); return r.json(); })
-      .then(d => { setUser(d.user); setStatus('ready'); })
-      .catch(() => setStatus('ready'));
-  }, []);
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+          Portal de Monitoreo y Evaluación
+        </h1>
 
-  async function login(e) {
-    e.preventDefault(); setStatus('loading'); setMessage('');
-    try {
-      const r = await fetch('/api/sso', {
-        method: 'POST', credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token })
-      });
-      const d = await r.json();
-      if (!r.ok) throw new Error(d.error || 'No autorizado');
-      setUser(d.user); setToken('');
-    } catch (err) { setMessage(err.message); }
-    finally { setStatus('ready'); }
-  }
+        <p className="mt-5 max-w-xl text-lg leading-8 text-slate-400">
+          Aplicación preparada para consultar, organizar y presentar
+          información de monitoreo y evaluación.
+        </p>
 
-  async function logout() {
-    await fetch('/api/logout', { method: 'POST', credentials: 'include' });
-    setUser(null);
-  }
+        <div className="mt-10 grid gap-4 sm:grid-cols-2">
+          <article className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+            <p className="text-sm text-slate-500">
+              Estado
+            </p>
 
-  if (status === 'checking') return <main className="center"><p>Verificando sesión...</p></main>;
-  if (user) return <main className="center"><section className="dashboard"><header><div><span className="ok">SESIÓN VERIFICADA</span><h1>Monitoreo y Evaluación</h1></div><button className="secondary" onClick={logout}>Cerrar sesión</button></header><div className="grid"><article><span>Usuario</span><strong>{user.nombre}</strong></article><article><span>Rol</span><strong>{user.role}</strong></article></div></section></main>;
-  return <main className="center"><form className="card" onSubmit={login}><div className="shield">✓</div><h1>Acceso seguro</h1><p>Portal de Monitoreo y Evaluación</p><label htmlFor="token">Token SSO</label><input id="token" type="password" value={token} onChange={e=>setToken(e.target.value)} placeholder="Pega el JWT recibido" required autoComplete="off"/><button disabled={status==='loading'}>{status==='loading'?'Verificando...':'Ingresar'}</button>{message && <div className="error" role="alert">{message}</div>}<small>Se validan firma, vigencia, acceso y usuario.</small></form></main>;
+            <p className="mt-2 text-lg font-semibold text-emerald-400">
+              Aplicación activa
+            </p>
+          </article>
+
+          <article className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
+            <p className="text-sm text-slate-500">
+              Módulo
+            </p>
+
+            <p className="mt-2 text-lg font-semibold">
+              Monitoreo y Evaluación
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+  );
 }
-
-createRoot(document.getElementById('root')).render(<App/>);
