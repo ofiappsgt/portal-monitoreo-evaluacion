@@ -4,25 +4,16 @@ services:
     runtime: node
     plan: free
     buildCommand: npm ci && npm run build
-    preDeployCommand: npm run db:migrate
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        fromDatabase:
-          name: monitoreo-evaluacion-db
-          property: connectionString
+      - value: postgresql://ofi_admin:FcmJv7TdTfw6hJnLsQMXAmHli0B5j2e3@dpg-d98j1h5aeets7382k13g-a/ofi_fondos_emjt
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_ISSUER
         sync: false
       - key: JWT_AUDIENCE
         sync: false
-
-databases:
-  - name: monitoreo-evaluacion-db
-    plan: free
-    databaseName: monitoreo_evaluacion
-    user: monitoreo_app
