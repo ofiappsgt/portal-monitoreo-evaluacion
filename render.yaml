@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: portal-monitoreo-evaluacion
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    preDeployCommand: npm run db:migrate
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: monitoreo-evaluacion-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_ISSUER
+        sync: false
+      - key: JWT_AUDIENCE
+        sync: false
+
+databases:
+  - name: monitoreo-evaluacion-db
+    plan: free
+    databaseName: monitoreo_evaluacion
+    user: monitoreo_app
