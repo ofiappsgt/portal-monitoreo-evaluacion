@@ -10,7 +10,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-      - value: postgresql://ofi_admin:FcmJv7TdTfw6hJnLsQMXAmHli0B5j2e3@dpg-d98j1h5aeets7382k13g-a/ofi_fondos_emjt
+        value: postgresql://ofi_admin:FcmJv7TdTfw6hJnLsQMXAmHli0B5j2e3@dpg-d98j1h5aeets7382k13g-a/ofi_fondos_emjt
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_ISSUER
